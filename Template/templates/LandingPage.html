@@ -1,0 +1,25 @@
+{% if user and not user.is_anonymous %}
+  <a>Hello, {{ user.get_full_name }}!</a>
+     Hello {{ user.get_full_name|default:user.username }}!
+       <a>{{ user.get_email|default:user.email }}!</a>
+
+
+  <a>Hello, {{ user.last_name }}!</a>
+  <a>Hello, {{ user.first_name }}!</a>
+
+
+  <br>
+  <a href="/logout">Logout</a>
+          <p>You are logged in as <strong>{{ user.username }}</strong>!</p>
+
+        {% for assoc in backends.associated %}
+          <li>
+            {{ assoc.provider }} ({{ assoc.uid }})
+          </li>
+        {% empty %}
+          <li>No associations</li>
+        {% endfor %}
+
+{% else %}
+  <a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}">Login with Facebook</a>
+{% endif %}
