@@ -40,3 +40,5 @@ test.db
 sessions/
 _build/
 fabfile.py
+
+views.py

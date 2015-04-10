@@ -8,6 +8,9 @@ import sys
 
 import requests
 
+from django.contrib.auth.models import User
+from friendship.models import Friend, Follow
+#from friendship.models import *
 
 LOGGING = {
     'version': 1,
@@ -31,12 +34,17 @@ def login(request):
     # return render_to_response('login.html', context_instance=context)
     #return render(request, 'LandingPage.html')
     logging.info(request)
-    return render(request, 'LandingPage.html')
+    testing = "ei"
+    return render(request, 'LandingPage.html',{'test':testing})
 
 
 @login_required(login_url='/')
 def home(request):
     #return render_to_response('home.html')
+
+    following = Follow.objects.following(request.user)
+
+
     return render_to_response('home.html')
 
 
