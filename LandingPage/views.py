@@ -8,9 +8,12 @@ import sys
 
 import requests
 
+import uuid
+
 from django.contrib.auth.models import User
 from friendship.models import Friend, Follow
-#from friendship.models import *
+
+from django.http import HttpResponse
 
 LOGGING = {
     'version': 1,
@@ -40,12 +43,19 @@ def login(request):
 
 @login_required(login_url='/')
 def home(request):
-    #return render_to_response('home.html')
-
     following = Follow.objects.following(request.user)
+    allusers = User.objects.all().values('pk')
+    other_user = User.objects.get(pk = 3)
 
+    following_created = Follow.objects.add_follower(request.user, other_user)
 
-    return render_to_response('home.html')
+    return render(request,'home.html',{'allusers':allusers})
+
+@login_required(login_url='/')
+def addfriend(request, id):
+    following = Follow.objects.following(request.user)
+    allusers = User.objects.all().values('pk')
+    return render(request,'home.html',{'allusers':allusers})
 
 
 
